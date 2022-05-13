@@ -6,7 +6,7 @@
 #include <set>
 #include <functional>
 
-using operation = std::function<numeric*(const operand*, const operand*)>;
+using operation = std::function<numeric*(operand*, const operand*)>;
 
 class binary_operator: public token{
   private:
@@ -14,7 +14,7 @@ class binary_operator: public token{
     operation apply_;
   public:
     binary_operator(std::string str, int priority, operation apply);
-    numeric* operator()(const operand*, const operand*) const;
+    numeric* operator()(operand*, const operand*) const;
     inline int priority() const;
     inline operation apply() const;
     static std::set<binary_operator> set;
