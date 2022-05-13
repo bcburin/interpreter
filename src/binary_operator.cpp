@@ -16,6 +16,10 @@ bool operator<(const binary_operator& op1, const binary_operator& op2) {
 
 
 std::set<binary_operator> binary_operator::set = {
+  binary_operator("+=", 8, sum_assign__),
+  binary_operator("-=", 9, sub_assign__),
+  binary_operator("*=", 10, mul_assign__),
+  binary_operator("/=", 13, div_assign__),
   binary_operator("=", 16, assign__),
   binary_operator("+", 24, sum__),
   binary_operator("-", 32, sub__),

@@ -3,10 +3,30 @@
 
 #include "binary_operator.h"
 
-operation sum__ = [](operand* op1, const operand* op2){ return new numeric(op1->value() + op2->value()); };
-operation sub__ = [](operand* op1, const operand* op2){ return new numeric(op1->value() - op2->value()); };
-operation mul__ = [](operand* op1, const operand* op2){ return new numeric(op1->value() * op2->value()); };
-operation div__ = [](operand* op1, const operand* op2){ return new numeric(op1->value() / op2->value()); };
+operation sum__ = [](operand* x, const operand* y){ 
+  if(!y) throw std::invalid_argument("Expected expression after + operator.");
+  if(!x) return new numeric(y->value());
+  return new numeric(x->value() + y->value()); 
+};
+
+operation sub__ = [](operand* x, const operand* y){
+  if(!y) throw std::invalid_argument("Expected expression after - operator.");
+  if(!x) return new numeric(-(y->value()));
+  return new numeric(x->value() - y->value()); 
+};
+
+operation mul__ = [](operand* x, const operand* y){
+  if(!y) throw std::invalid_argument("Expected expression after * operator.");
+  if(!x) throw std::invalid_argument("Expected expression before * operator.");
+  return new numeric(x->value() * y->value()); 
+};
+
+operation div__ = [](operand* x, const operand* y){
+  if(!y) throw std::invalid_argument("Expected expression after / operator.");
+  if(!x) throw std::invalid_argument("Expected expression before / operator.");
+  if (y->value() == 0) throw std::invalid_argument("Division by zero.");
+  return new numeric(x->value() / y->value()); 
+};
 
 operation assign__ = [](operand* left, const operand* right) {
   // Read left hand side operand as variable
@@ -18,5 +38,19 @@ operation assign__ = [](operand* left, const operand* right) {
   // Cascade result
   return new numeric(right->value());
 };
+
+operation operation_assign(std::string op_name, operation& __op__) {
+  return [op_name, &__op__](operand* left, const operand* right){ 
+    if(!right) throw std::invalid_argument("Expected expression after " + op_name + " operator.");
+    if(!left) throw std::invalid_argument("Expected variable before " + op_name + " operator.");
+    numeric* result = __op__(left, right);
+    return assign__(left, result);
+  };
+}
+
+operation sum_assign__ = operation_assign("+=", sum__);
+operation sub_assign__ = operation_assign("-=", sub__);
+operation mul_assign__ = operation_assign("*=", mul__);
+operation div_assign__ = operation_assign("/=", div__);
 
 #endif
