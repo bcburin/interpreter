@@ -40,7 +40,7 @@ if_statement::~if_statement() {
 }
 
 void if_statement::execute() {
-  if(expression(condition_, context_).parse()->value()) if_body_->call();
+  if( expression(condition_, context_).result() ) if_body_->call();
   else if(else_body_) else_body_->call();
 }
 
