@@ -3,14 +3,14 @@
 callable::callable(context* parent, std::unordered_set<std::string> terminators)
 : context(parent->input(), parent->output(), parent), terminators_(terminators) {
   // Print input marker
-  if(os_) *os_ << ">> ";
+  display(">> ");
   // Read lines
   std::string line;
   while ( std::getline(*is_, line) && !is_terminator(line) ) {
     // Store statements
     statements_.push_back(statement::interpret(line, this));
     // Print input marker
-    if(os_) *os_ << ">> ";
+    display(">> ");
   }
   // Store terminator line
   if(is_terminator(line)) statements_.push_back(new terminator(line));

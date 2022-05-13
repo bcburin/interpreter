@@ -2,6 +2,7 @@
 #define EXPRESSION_H
 
 #include "statement.h"
+#include "interpreter.h"
 #include "syntax_tree.h"
 
 
@@ -18,7 +19,11 @@ expression::expression(std::string str, context* contx)
 : statement(str, contx), syntax_tree(str, contx) {}
 
 void expression::execute() {
-  *statement::context_->output() << "   " << parse()->value()  << std::endl;
+  // Pase expression
+  parse();
+  // Display result if in interpreter shell
+  if(auto interpreter_context = dynamic_cast<interpreter*>(statement::context_))
+    interpreter_context->display(result_->value(), true);
 }
 
 

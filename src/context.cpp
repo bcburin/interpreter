@@ -12,3 +12,19 @@ double context::get(std::string var_name) {
 void context::set(std::string var_name, double value) {
   variables_[var_name] = value;
 }
+
+
+void context::display(std::string str, bool endl) { 
+  if(os_) { 
+    *os_ << str;
+    if(endl) *os_ << std::endl; 
+  }
+}
+
+
+void context::display(double value, bool endl) { 
+  if(os_) { 
+    *os_ << "   " << value;
+    if(endl) *os_ << std::endl; 
+  }
+}

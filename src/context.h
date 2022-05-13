@@ -14,6 +14,8 @@ class context {
     context* parent_;
   public:
     context(std::istream* is_, std::ostream* os_ = nullptr, context* parent = nullptr);
+    void display(std::string str, bool endl=false);
+    void display(double value, bool endl=false);
     virtual double get(std::string var_name);
     virtual void set(std::string var_name, double value);
     inline bool contains(std::string var_name);
