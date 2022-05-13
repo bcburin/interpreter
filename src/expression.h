@@ -18,7 +18,7 @@ expression::expression(std::string str, context* contx)
 : statement(str, contx), syntax_tree(str, contx) {}
 
 void expression::execute() {
-  *statement::context_->output() << parse()->value()  << std::endl;
+  *statement::context_->output() << "   " << parse()->value()  << std::endl;
 }
 
 
