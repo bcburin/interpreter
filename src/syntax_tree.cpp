@@ -15,8 +15,8 @@ syntax_tree::syntax_tree(std::string str, context* contx)
     int index = find_outer_operator(op.str());
     if (index != std::string::npos) { // If operator was found
       data_ = new binary_operator(op);
-      left_ = new syntax_tree(str_.substr(0,index));
-      right_ = new syntax_tree(str_.substr(index+op.str().size(),str_.size()-index-op.str().size()));
+      left_ = new syntax_tree(str_.substr(0,index), context_);
+      right_ = new syntax_tree(str_.substr(index+op.str().size(),str_.size()-index-op.str().size()), context_);
       return;
     }
   }
@@ -33,13 +33,13 @@ syntax_tree::syntax_tree(const syntax_tree& other): binary_tree<token*>(other) {
 
 syntax_tree::syntax_tree(syntax_tree&& other): binary_tree<token*>(std::move(other)) {}
 
-syntax_tree::~syntax_tree() { delete result_; }
+syntax_tree::~syntax_tree() { delete result_; /*delete data_;*/ }
 
 
-numeric* syntax_tree::parse() {
+operand* syntax_tree::parse() {
   // Base case: operand node
   if (auto operand_node = dynamic_cast<operand*>(data_)) 
-    return result_ = new numeric(operand_node->value());
+    return result_ = operand_node;
   // Base case: empty tree
   if(is_empty()) return nullptr;
   // If it is not an operand node, it is an operator node
