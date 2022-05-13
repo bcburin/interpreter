@@ -28,6 +28,60 @@ operation div__ = [](operand* x, const operand* y){
   return new numeric(x->value() / y->value()); 
 };
 
+operation or__ = [](operand* x, const operand* y){
+  if(!y) throw std::invalid_argument("Expected expression after || operator.");
+  if(!x) throw std::invalid_argument("Expected expression before || operator.");
+  return new numeric(x->value() || y->value()); 
+};
+
+operation and__ = [](operand* x, const operand* y){
+  if(!y) throw std::invalid_argument("Expected expression after && operator.");
+  if(!x) throw std::invalid_argument("Expected expression before && operator.");
+  return new numeric(x->value() && y->value()); 
+};
+
+operation lt__ = [](operand* x, const operand* y){
+  if(!y) throw std::invalid_argument("Expected expression after < operator.");
+  if(!x) throw std::invalid_argument("Expected expression before < operator.");
+  return new numeric(x->value() < y->value()); 
+};
+
+operation gt__ = [](operand* x, const operand* y){
+  if(!y) throw std::invalid_argument("Expected expression after > operator.");
+  if(!x) throw std::invalid_argument("Expected expression before > operator.");
+  return new numeric(x->value() > y->value()); 
+};
+
+operation le__ = [](operand* x, const operand* y){
+  if(!y) throw std::invalid_argument("Expected expression after <= operator.");
+  if(!x) throw std::invalid_argument("Expected expression before <= operator.");
+  return new numeric(x->value() <= y->value()); 
+};
+
+operation ge__ = [](operand* x, const operand* y){
+  if(!y) throw std::invalid_argument("Expected expression after >= operator.");
+  if(!x) throw std::invalid_argument("Expected expression before >= operator.");
+  return new numeric(x->value() >= y->value()); 
+};
+
+operation eq__ = [](operand* x, const operand* y){
+  if(!y) throw std::invalid_argument("Expected expression after == operator.");
+  if(!x) throw std::invalid_argument("Expected expression before == operator.");
+  return new numeric(x->value() == y->value()); 
+};
+
+operation ne__ = [](operand* x, const operand* y){
+  if(!y) throw std::invalid_argument("Expected expression after != operator.");
+  if(!x) throw std::invalid_argument("Expected expression before != operator.");
+  return new numeric(x->value() == y->value()); 
+};
+
+operation not__ = [](operand* x, const operand* y){
+  if(!y) throw std::invalid_argument("Expected expression after ! operator.");
+  if(x) throw std::invalid_argument("Unexpected expression before ! operator.");
+  return new numeric( !(y->value()) ); 
+};
+
 operation assign__ = [](operand* left, const operand* right) {
   // Read left hand side operand as variable
   auto var = dynamic_cast<variable*>(left);
