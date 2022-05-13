@@ -73,7 +73,7 @@ operation eq__ = [](operand* x, const operand* y){
 operation ne__ = [](operand* x, const operand* y){
   if(!y) throw std::invalid_argument("Expected expression after != operator.");
   if(!x) throw std::invalid_argument("Expected expression before != operator.");
-  return new numeric(x->value() == y->value()); 
+  return new numeric(x->value() != y->value()); 
 };
 
 operation not__ = [](operand* x, const operand* y){
