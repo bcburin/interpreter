@@ -1,7 +1,7 @@
 #include "callable.h"
 
 callable::callable(context* parent, std::unordered_set<std::string> terminators)
-: context(parent->input(), parent->output()), parent_(parent), terminators_(terminators) {
+: context(parent->input(), parent->output(), parent), terminators_(terminators) {
   // Print input marker
   if(os_) *os_ << ">> ";
   // Read lines
@@ -26,8 +26,8 @@ void callable::call() {
 
 double callable::get(std::string name) {
   // Look for value in it and its parents
-  for(callable* search = this; search; search = dynamic_cast<callable*>(search->parent_)) {
-    if(search->contains(name)) return search->get(name);
+  for(context* search = this; search; search = search->parent()) {
+    if(search->contains(name)) return search->context::get(name);
   }
   // Variable undefined
   throw std::invalid_argument("Undefined variable: '" + name + "'");
@@ -35,9 +35,9 @@ double callable::get(std::string name) {
 
 void callable::set(std::string name, double value) {
   // Look for value in its parents
-  for(callable* search = this; search; search = dynamic_cast<callable*>(search->parent_)) {
+  for(context* search = this; search; search = search->parent()) {
     if(search->contains(name)) {
-      search->set(name, value);
+      search->context::set(name, value);
       return;
     }
   }

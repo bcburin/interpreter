@@ -10,7 +10,6 @@ class callable: public context {
   private:
     std::list<statement*> statements_;
     std::unordered_set<std::string> terminators_;
-    context* parent_;
     inline bool is_terminator(std::string line);
   public:
     callable(context* parent, std::unordered_set<std::string> terminators = {"end"});

@@ -1,6 +1,7 @@
 #include "context.h"
 
-context::context(std::istream* is, std::ostream* os): is_(is), os_(os) {}
+context::context(std::istream* is, std::ostream* os, context* parent)
+: is_(is), os_(os), parent_(parent) {}
 
 double context::get(std::string var_name) {
   if(!contains(var_name)) throw std::invalid_argument("Undefined variable: '" + var_name + "'");
